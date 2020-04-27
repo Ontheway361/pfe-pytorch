@@ -191,7 +191,7 @@ class ResNet(nn.Module):
         return x
 
 
-def resnet_zoo(backbone = 'resnet50', feat_dim = 512, drop_ratio = 0.5):
+def resnet_zoo(backbone = 'resnet18', feat_dim = 512, drop_ratio = 0.5):
 
     version_dict = {
         'resnet18' : [2, 2, 2, 2],

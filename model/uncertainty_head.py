@@ -6,48 +6,39 @@ author: lujie
 """
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+from torch.nn import Parameter
 from IPython import embed
 
-class MLSLoss(nn.Module):
+class UncertaintyHead(nn.Module):
+    ''' Evaluate the log(sigma^2) '''
+    
+    def __init__(self, in_feat = 512):
 
-    def __init__(self, mean = False):
+        super(UncertaintyHead, self).__init__()
+        self.fc1   = Parameter(torch.FloatTensor(in_feat, in_feat))
+        self.bn1   = nn.BatchNorm1d(in_feat)
+        self.relu  = nn.PReLU(in_feat)
+        self.fc2   = Parameter(torch.FloatTensor(in_feat, in_feat))
+        self.bn2   = nn.BatchNorm1d(in_feat)
+        self.register_buffer('gamma', torch.ones(1) * 1e-4)
+        self.register_buffer('beta', torch.zeros(1) - 7.0)
+        nn.init.xavier_uniform_(self.fc1)
+        nn.init.xavier_uniform_(self.fc2)
 
-        super(MLSLoss, self).__init__()
-        self.mean = mean
 
-    def negMLS(self, mu_X, sigma_sq_X):
+    def forward(self, x):
 
-        if self.mean:
-            XX = torch.mul(mu_X, mu_X).sum(dim=1, keepdim=True)
-            YY = torch.mul(mu_X.T, mu_X.T).sum(dim=0, keepdim=True)
-            XY = torch.mm(mu_X, mu_X.T)
-            mu_diff = XX + YY - 2 * XY
-            sig_sum = sigma_sq_X.mean(dim=1, keepdim=True) + sigma_sq_X.T.sum(dim=0, keepdim=True)
-            diff    = mu_diff / (1e-8 + sig_sum) + mu_X.size(1) * torch.log(sig_sum)
-            return diff
-        else:
-            mu_diff = mu_X.unsqueeze(1) - mu_X.unsqueeze(0)
-            sig_sum = sigma_sq_X.unsqueeze(1) + sigma_sq_X.unsqueeze(0)
-            diff    = torch.mul(mu_diff, mu_diff) / (1e-10 + sig_sum) + torch.log(sig_sum)
-            diff    = diff.sum(dim=2, keepdim=False)
-            return diff
-
-    def forward(self, gty, mu_X, log_sigma_sq):
-
-        non_diag_mask = (1 - torch.eye(mu_X.size(0))).int()
-        sig_X    = torch.exp(log_sigma_sq)
-        loss_mat = self.negMLS(mu_X, sig_X)
-        gty_mask = (torch.eq(gty[:, None], gty[None, :])).int()
-        pos_mask = (non_diag_mask * gty_mask).bool()
-        pos_loss = loss_mat[pos_mask].mean()
-        return pos_loss
+        x = self.relu(self.bn1(F.linear(x, self.fc1)))
+        x = self.bn2(F.linear(x, self.fc2))
+        x = self.gamma * x + self.beta
+        x = torch.log(1e-6 + torch.exp(x))
+        return x
 
 
 if __name__ == "__main__":
 
-    mls = MLSLoss(mean=False)
-    gty = torch.Tensor([1, 2, 3, 2, 3, 3, 2])
-    muX = torch.randn((7, 3))
-    siX = torch.rand((7,3))
-    diff = mls(gty, muX, siX)
+    mls = UncertaintyHead(in_feat=5)
+    muX = torch.randn((20, 5))
+    diff = mls(muX)
     print(diff)
