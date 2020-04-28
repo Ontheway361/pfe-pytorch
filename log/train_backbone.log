@@ -1,0 +1,68 @@
+----------------Environment Versions----------------
+- Python    : 3.7.3 
+- PyTorch   : 1.1.0
+- TorchVison: 0.3.0
+- USE_GPU   : True
+----------------------------------------------------
+Parallel mode was going ...
+Resuming the train process at   1 epoches ...
+Model loading was finished ...
+Data loading was finished ...
+epoch :  1| 5, iter :  100| 992,  loss : -2657.0063
+epoch :  1| 5, iter :  200| 992,  loss : -2705.3872
+epoch :  1| 5, iter :  300| 992,  loss : -2722.4153
+epoch :  1| 5, iter :  400| 992,  loss : -2731.3879
+epoch :  1| 5, iter :  500| 992,  loss : -2736.8850
+epoch :  1| 5, iter :  600| 992,  loss : -2740.7804
+epoch :  1| 5, iter :  700| 992,  loss : -2744.4659
+epoch :  1| 5, iter :  800| 992,  loss : -2747.9572
+epoch :  1| 5, iter :  900| 992,  loss : -2750.4960
+train_loss : -2752.6475
+Single epoch cost time : 3.85 mins
+****************new SOTA was found****************
+epoch :  2| 5, iter :  100| 992,  loss : -2777.3234
+epoch :  2| 5, iter :  200| 992,  loss : -2774.2954
+epoch :  2| 5, iter :  300| 992,  loss : -2773.6455
+epoch :  2| 5, iter :  400| 992,  loss : -2773.7553
+epoch :  2| 5, iter :  500| 992,  loss : -2773.3056
+epoch :  2| 5, iter :  600| 992,  loss : -2773.0361
+epoch :  2| 5, iter :  700| 992,  loss : -2773.0753
+epoch :  2| 5, iter :  800| 992,  loss : -2773.7208
+epoch :  2| 5, iter :  900| 992,  loss : -2774.0920
+train_loss : -2774.5521
+Single epoch cost time : 3.80 mins
+****************new SOTA was found****************
+epoch :  3| 5, iter :  100| 992,  loss : -2776.6750
+epoch :  3| 5, iter :  200| 992,  loss : -2777.8207
+epoch :  3| 5, iter :  300| 992,  loss : -2776.4285
+epoch :  3| 5, iter :  400| 992,  loss : -2775.7481
+epoch :  3| 5, iter :  500| 992,  loss : -2775.7185
+epoch :  3| 5, iter :  600| 992,  loss : -2775.2633
+epoch :  3| 5, iter :  700| 992,  loss : -2775.6621
+epoch :  3| 5, iter :  800| 992,  loss : -2775.8025
+epoch :  3| 5, iter :  900| 992,  loss : -2776.1324
+train_loss : -2776.5364
+Single epoch cost time : 3.70 mins
+****************new SOTA was found****************
+epoch :  4| 5, iter :  100| 992,  loss : -2777.1886
+epoch :  4| 5, iter :  200| 992,  loss : -2776.6736
+epoch :  4| 5, iter :  300| 992,  loss : -2776.9170
+epoch :  4| 5, iter :  400| 992,  loss : -2776.7274
+epoch :  4| 5, iter :  500| 992,  loss : -2776.6935
+epoch :  4| 5, iter :  600| 992,  loss : -2776.8823
+epoch :  4| 5, iter :  700| 992,  loss : -2776.4362
+epoch :  4| 5, iter :  800| 992,  loss : -2776.6007
+epoch :  4| 5, iter :  900| 992,  loss : -2776.5034
+train_loss : -2776.2909
+Single epoch cost time : 3.78 mins
+epoch :  5| 5, iter :  100| 992,  loss : -2777.8533
+epoch :  5| 5, iter :  200| 992,  loss : -2776.3377
+epoch :  5| 5, iter :  300| 992,  loss : -2775.0353
+epoch :  5| 5, iter :  400| 992,  loss : -2776.3318
+epoch :  5| 5, iter :  500| 992,  loss : -2776.1743
+epoch :  5| 5, iter :  600| 992,  loss : -2775.9966
+epoch :  5| 5, iter :  700| 992,  loss : -2776.1331
+epoch :  5| 5, iter :  800| 992,  loss : -2776.4060
+epoch :  5| 5, iter :  900| 992,  loss : -2776.1280
+train_loss : -2776.1716
+Single epoch cost time : 3.68 mins

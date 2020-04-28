@@ -16,11 +16,11 @@ from torch.utils import data
 from IPython import embed
 
 
-class CASIAWebFace_Norm(data.Dataset):
+class CASIAWebFace(data.Dataset):
 
     def __init__(self, args, mode = 'train'):
 
-        super(CASIAWebFace_Norm, self).__init__()
+        super(CASIAWebFace, self).__init__()
         self.args       = args
         self.mode       = mode
         self.transforms = torchvision.transforms.Compose([
@@ -31,13 +31,13 @@ class CASIAWebFace_Norm(data.Dataset):
             self.lines  = f.readlines()
         f.close()
         if args.is_debug:
-            self.lines = self.lines[:1024]  # just for debug
+            self.lines = self.lines[:512]  # just for debug
             print('debug version for casia ...')
 
 
     def _load_imginfo(self, img_name):
 
-        img_path = os.path.join(self.args.casia_dir, img_name)
+        img_path = os.path.join(self.args.casia_dir, 'align_112_112', img_name)
         img = None
         try:
             img = cv2.resize(cv2.imread(img_path), self.args.in_size)  #  TODO
@@ -50,16 +50,20 @@ class CASIAWebFace_Norm(data.Dataset):
 
     def __getitem__(self, index):
 
-        info  = self.lines[index].strip().split('\t')
-        # info = self.lines[index].strip().split(' ')
+        # info  = self.lines[index].strip().split('\t')
+        info = self.lines[index].strip().split(' ')
         img  = self._load_imginfo(info[0])
-        while img is None:
+        cnt_try = 0
+        while (img is None) and cnt_try < self.args.try_times:
             idx        = np.random.randint(0, len(self.lines) - 1)
-            info  = self.lines[idx].strip().split('\t')
-            # info = self.lines[idx].strip().split(' ')
+            # info  = self.lines[idx].strip().split('\t')
+            info = self.lines[idx].strip().split(' ')
             img  = self._load_imginfo(info[0])
+            cnt_try += 1
+        if cnt_try == self.args.try_times:
+            print('read face failed ...')
         img = self.transforms(img)
-        return (img, int(info[1]), info[0])
+        return (img, int(info[1]))
 
 
     def __len__(self):
